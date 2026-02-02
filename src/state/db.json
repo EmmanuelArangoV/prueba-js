@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": "3d29",
+      "fullname": "Emmanuel Arango",
+      "email": "emmanuel@correro.com",
+      "password": "emma1221",
+      "role": "user"
+    }
+  ],
+  "tasks": []
+}
