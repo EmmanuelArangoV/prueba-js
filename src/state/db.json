@@ -5,21 +5,24 @@
       "fullname": "Emmanuel Arango",
       "email": "emmanuel@correro.com",
       "password": "emma1221",
-      "role": "user"
+      "role": "user",
+      "createdAt": "2/2/2026"
     },
     {
       "id": "0ff8",
       "fullname": "Daniela",
       "email": "dani@gmail.com",
       "password": "123456",
-      "role": "user"
+      "role": "user",
+      "createdAt": "2/2/2026"
     },
     {
       "id": "43re2",
       "fullname": "Admin Ultrapoderoso",
       "email": "admin@gmail.com",
       "password": "admin123",
-      "role": "admin"
+      "role": "admin",
+      "createdAt": "2/2/2026"
     },
     {
       "id": "8ce4",
@@ -32,20 +35,10 @@
   ],
   "tasks": [
     {
-      "id": "da10",
-      "title": "Nueva Tarea JavaScript",
-      "category": "testing",
-      "priority": "High",
-      "status": "in-progress",
-      "dueDate": "2026-02-21",
-      "description": "Este es un ensayo para el módulo 3",
-      "userId": "3d29"
-    },
-    {
       "id": "dfbd",
       "title": "Prueba Mòdulo 3",
       "category": "development",
-      "priority": "medium",
+      "priority": "High",
       "status": "completed",
       "dueDate": "2026-02-11",
       "description": "Ensayo",
@@ -59,6 +52,16 @@
       "status": "completed",
       "dueDate": "2026-02-11",
       "description": "Ensayo",
+      "userId": "0ff8"
+    },
+    {
+      "id": "ee46",
+      "title": "Hola ensayo",
+      "category": "development",
+      "priority": "High",
+      "status": "pending",
+      "dueDate": "2026-02-08",
+      "description": "Hola, hola, hola",
       "userId": "0ff8"
     }
   ]

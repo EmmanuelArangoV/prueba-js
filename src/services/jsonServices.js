@@ -54,9 +54,10 @@ class JsonServices {
         }
     }
 
-    async getTaskStats(userId) {
+    async getTaskStats(userId = null) {
         try {
-            const response = await fetch(`${API_BASE}/tasks?userId=${userId}`);
+            const url = userId ? `${API_BASE}/tasks?userId=${userId}` : `${API_BASE}/tasks`;
+            const response = await fetch(url);
             const tasks = await response.json();
 
             const total = tasks.length;

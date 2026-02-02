@@ -23,9 +23,11 @@ export function DashboardView() {
     content.appendChild(PageHeader('Dashboard Overview', 'Track your academic performance and progress', true));
 
     const store = getStore();
-    const userId = store.user ? store.user.id : null;
+    const user = store.user;
+    const isAdmin = user && user.role === 'admin';
+    const userId = user ? user.id : null;
 
-    JsonServices.getTaskStats(userId).then(statsResponse => {
+    JsonServices.getTaskStats(isAdmin ? null : userId).then(statsResponse => {
         if (statsResponse.success) {
             const s = statsResponse.stats;
             const stats = [
@@ -64,7 +66,9 @@ export function DashboardView() {
     });
 
     // Cargar tareas
-    JsonServices.getAllTasks().then(async (tasks) => {
+    const tasksPromise = isAdmin ? JsonServices.getAllTasks() : JsonServices.getTasksByUser(userId || 0);
+
+    tasksPromise.then(async (tasks) => {
         if(tasks.success) {
             if (tasks.tasks.length > 0) {
                 const tableElement = await TaskTable(tasks.tasks);

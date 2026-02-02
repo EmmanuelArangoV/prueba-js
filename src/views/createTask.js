@@ -110,12 +110,12 @@ export function CreateTaskView() {
     main.appendChild(header);
     main.appendChild(content);
 
-    taskRequest(main, isEditing, editingTask?.id);
+    taskRequest(main, isEditing, editingTask);
 
     return main;
 }
 
-function taskRequest(main, isEditing, taskId) {
+function taskRequest(main, isEditing, editingTask) {
     const form = main.querySelector('.task-form');
 
     form.addEventListener('submit', async (e) => {
@@ -131,7 +131,12 @@ function taskRequest(main, isEditing, taskId) {
 
         // Get userId from store
         const store = getStore();
-        const userId = store.user ? store.user.id : null;
+        let userId = store.user ? store.user.id : null;
+
+        // If editing, preserve the original owner (userId)
+        if (isEditing && editingTask && editingTask.userId) {
+            userId = editingTask.userId;
+        }
 
         // Create object to send
         const taskData = {
@@ -146,7 +151,7 @@ function taskRequest(main, isEditing, taskId) {
 
         let taskResponse;
         if (isEditing) {
-            taskResponse = await JsonServices.updateTask(taskId, taskData);
+            taskResponse = await JsonServices.updateTask(editingTask.id, taskData);
         } else {
             taskResponse = await JsonServices.createTask(taskData);
         }

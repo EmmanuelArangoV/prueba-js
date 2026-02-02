@@ -6,15 +6,15 @@ import { CreateTaskView } from "../views/createTask.js";
 import { ProfileView } from "../views/profile.js";
 
 import { render } from "../app.js";
-import { isAuth } from "../state/store.js";
+import { isAuth, getRole } from "../state/store.js";
 
 const routes = {
-    'login': LoginView,
-    'register': RegisterView,
-    'my-tasks': MyTasks,
-    'dashboard': DashboardView,
-    'create-task': CreateTaskView,
-    'profile': ProfileView
+    'login': { factory: LoginView, roles: [] },
+    'register': { factory: RegisterView, roles: [] },
+    'my-tasks': { factory: MyTasks, roles: ['user', 'admin'] },
+    'dashboard': { factory: DashboardView, roles: ['user', 'admin'] },
+    'create-task': { factory: CreateTaskView, roles: ['user', 'admin'] },
+    'profile': { factory: ProfileView, roles: ['user', 'admin'] }
 };
 
 const publicRoutes = ['login', 'register'];
@@ -31,14 +31,23 @@ export function router() {
     if (!publicRoutes.includes(hash) && !isAuth()) {
         hash = 'login';
         window.location.hash = 'login';
+        return;
     }
 
-    const viewFactory = routes[hash];
+    const route = routes[hash];
 
-    if (viewFactory) {
-        render(viewFactory());
+    if (route) {
+        if (route.roles.length > 0) {
+            const userRole = getRole();
+            if (!route.roles.includes(userRole)) {
+                window.location.hash = '#dashboard';
+                return;
+            }
+        }
+        render(route.factory());
     } else {
         console.error('Ruta no encontrada:', hash);
+        window.location.hash = '#dashboard';
     }
 
 }

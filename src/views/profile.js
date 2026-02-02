@@ -69,7 +69,7 @@ export function ProfileView() {
                     </div>
                     <div class="info-item">
                         <span class="info-label">Employee ID</span>
-                        <span class="info-value">CZ-882103</span>
+                        <span class="info-value" id="info-employee-id">...</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Phone</span>
@@ -104,6 +104,7 @@ export function ProfileView() {
                 profileContainer.querySelector('#prof-role').textContent = user.role;
                 profileContainer.querySelector('#prof-email').textContent = user.email;
                 profileContainer.querySelector('#info-fullname').textContent = user.fullname;
+                profileContainer.querySelector('#info-employee-id').textContent = user.id;
                 profileContainer.querySelector('#info-role').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
                 
                 if (user.createdAt) {
