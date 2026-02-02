@@ -6,6 +6,7 @@ import { CreateTaskView } from "../views/createTask.js";
 import { ProfileView } from "../views/profile.js";
 
 import { render } from "../app.js";
+import { isAuth } from "../state/store.js";
 
 const routes = {
     'login': LoginView,
@@ -16,13 +17,18 @@ const routes = {
     'profile': ProfileView
 };
 
-// Proteccion de rutas -> Si es admin
+const publicRoutes = ['login', 'register'];
 
 export function router() {
 
     let hash = window.location.hash.slice(1);
 
     if (!hash || hash === '/') {
+        hash = 'login';
+        window.location.hash = 'login';
+    }
+
+    if (!publicRoutes.includes(hash) && !isAuth()) {
         hash = 'login';
         window.location.hash = 'login';
     }

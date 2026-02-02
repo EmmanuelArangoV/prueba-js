@@ -47,5 +47,10 @@ export function Sidebar() {
         </ul>
     `;
 
+    const logo = aside.querySelector('.logo-container');
+    logo.addEventListener('click', () => {
+        window.location.hash = '#dashboard';
+    });
+
     return aside;
 }
