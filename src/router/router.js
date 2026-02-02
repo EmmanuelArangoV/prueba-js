@@ -16,6 +16,8 @@ const routes = {
     'profile': ProfileView
 };
 
+// Proteccion de rutas -> Si es admin
+
 export function router() {
 
     let hash = window.location.hash.slice(1);
