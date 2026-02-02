@@ -653,10 +653,44 @@ td {
 }
 
 /* --- Task Name Column --- */
+/* --- Due Date Column --- */
+.due-date {
+    color: #6b7280;
+    white-space: nowrap;
+    min-width: 120px;
+    padding: 16px 32px !important;
+}
+
+.due-date.overdue {
+    color: #ef4444;
+}
+
+/* --- Task Name Column con más ancho --- */
 .task-name {
     font-weight: 500;
     color: #1a1a1a;
+    min-width: 200px;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+/* --- Ajuste general de columnas --- */
+th:nth-child(1) { width: 25%; }
+th:nth-child(2) { width: 15%; }
+th:nth-child(3) { width: 15%; }
+th:nth-child(4) { width: 15%; }
+th:nth-child(5) { width: 15%; min-width: 120px; }
+th:nth-child(6) { width: 15%; }
+
+td {
+    padding: 16px 24px;
+    border-top: 1px solid #f3f4f6;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
 
 /* --- Assignee Column --- */
 .assignee {
@@ -909,6 +943,8 @@ th:first-child {
         font-size: 28px;
     }
 }
+
+
 
 /* ============================================
    UTILIDADES GENERALES

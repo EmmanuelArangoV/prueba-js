@@ -18,5 +18,14 @@ export function PageHeader(title, subtitle, showButton = false) {
         ` : ''}
     `;
 
+    // Detectar click en el botón y redirigir a la vista de creación de tarea
+    if (showButton) {
+        const button = header.querySelector('.btn-new-task');
+        button.addEventListener('click', () => {
+            window.location.hash = '#create-task';
+        });
+    }
+
+
     return header;
 }

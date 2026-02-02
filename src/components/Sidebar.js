@@ -23,7 +23,7 @@ export function Sidebar() {
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#tasks" class="nav-link">
+                <a href="#my-tasks" class="nav-link">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="9 11 12 14 22 4"></polyline>

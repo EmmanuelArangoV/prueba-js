@@ -8,5 +8,16 @@
       "role": "user"
     }
   ],
-  "tasks": []
+  "tasks": [
+    {
+      "id": "da10",
+      "title": "Nueva Tarea JavaScript",
+      "category": "testing",
+      "priority": "High",
+      "status": "pending",
+      "dueDate": "2026-02-21",
+      "description": "Este es un ensayo para el módulo 3",
+      "userId": "3d29"
+    }
+  ]
 }

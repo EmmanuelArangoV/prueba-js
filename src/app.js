@@ -1,11 +1,13 @@
-import { LoginView } from "./views/login.js";
-import { RegisterView } from "./views/register.js";
 import {initStore} from "./state/store.js";
-import { MyTasks } from "./views/mytasks.js";
-import { DashboardView } from "./views/dashboard.js";
+import { router } from "./router/router.js";
 
+initStore();
+const app = document.getElementById('app');
 
-initStore()
-const app = document.getElementById('app')
+export function render(view) {
+    app.innerHTML = '';
+    app.appendChild(view);
+}
 
-app.appendChild(MyTasks());
+window.addEventListener('hashchange', router);
+window.addEventListener('load', router);
