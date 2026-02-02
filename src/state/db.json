@@ -6,6 +6,28 @@
       "email": "emmanuel@correro.com",
       "password": "emma1221",
       "role": "user"
+    },
+    {
+      "id": "0ff8",
+      "fullname": "Daniela",
+      "email": "dani@gmail.com",
+      "password": "123456",
+      "role": "user"
+    },
+    {
+      "id": "43re2",
+      "fullname": "Admin Ultrapoderoso",
+      "email": "admin@gmail.com",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": "8ce4",
+      "fullname": "Emmanuel Arango",
+      "email": "emma@gmail.com",
+      "password": "123456",
+      "role": "user",
+      "createdAt": "2/2/2026"
     }
   ],
   "tasks": [
@@ -14,10 +36,30 @@
       "title": "Nueva Tarea JavaScript",
       "category": "testing",
       "priority": "High",
-      "status": "pending",
+      "status": "in-progress",
       "dueDate": "2026-02-21",
       "description": "Este es un ensayo para el módulo 3",
       "userId": "3d29"
+    },
+    {
+      "id": "dfbd",
+      "title": "Prueba Mòdulo 3",
+      "category": "development",
+      "priority": "medium",
+      "status": "completed",
+      "dueDate": "2026-02-11",
+      "description": "Ensayo",
+      "userId": "3d29"
+    },
+    {
+      "id": "ddhd",
+      "title": "Prueba Mòdulo 3",
+      "category": "development",
+      "priority": "medium",
+      "status": "completed",
+      "dueDate": "2026-02-11",
+      "description": "Ensayo",
+      "userId": "0ff8"
     }
   ]
 }

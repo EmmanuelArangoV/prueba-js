@@ -3,6 +3,7 @@ import { RegisterView } from "../views/register.js";
 import { MyTasks } from "../views/mytasks.js";
 import { DashboardView } from "../views/dashboard.js";
 import { CreateTaskView } from "../views/createTask.js";
+import { ProfileView } from "../views/profile.js";
 
 import { render } from "../app.js";
 
@@ -12,6 +13,7 @@ const routes = {
     'my-tasks': MyTasks,
     'dashboard': DashboardView,
     'create-task': CreateTaskView,
+    'profile': ProfileView
 };
 
 export function router() {

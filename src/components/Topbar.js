@@ -1,3 +1,5 @@
+import {logout} from "../state/store.js";
+
 export function Topbar() {
     const header = document.createElement('header');
     header.classList.add('topbar');
@@ -9,27 +11,14 @@ export function Topbar() {
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
             <span>›</span>
-            <span class="breadcrumb-current">Dashboard</span>
+            <span class="breadcrumb-current">${window.location.hash.slice(1)}</span>
         </div>
 
         <div class="topbar-right">
-            <span class="notification-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-            </span>
-
             <div class="user-menu">
-                <svg class="user-avatar" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg id="avatar" class="user-avatar" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <div class="user-info">
-                    <div class="user-name">User Name</div>
-                    <div class="user-role">User</div>
-                </div><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
 
@@ -43,5 +32,27 @@ export function Topbar() {
         </div>
     `;
 
+    functionalities(header);
+
     return header;
+}
+
+function functionalities(header) {
+    const houseBttn = header.querySelector('.breadcrumb');
+
+    houseBttn.addEventListener('click', () => {
+        window.location.hash = '#dashboard';
+    });
+
+    const logoutIcon = header.querySelector('.logout-icon');
+
+    logoutIcon.addEventListener('click', () => {
+        logout();
+        window.location.hash = '#login';
+    });
+
+    const avatar = header.querySelector('#avatar');
+    avatar.addEventListener('click', () => {
+        window.location.hash = '#profile';
+    })
 }

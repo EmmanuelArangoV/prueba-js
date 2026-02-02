@@ -1,8 +1,12 @@
-import { getStore } from "../state/store.js";
+import { getStore, clearEditingTask } from "../state/store.js";
 import JsonServices from "../services/jsonServices.js";
 import { Topbar } from "../components/Topbar.js";
 
 export function CreateTaskView() {
+    const store = getStore();
+    const editingTask = store.editingTask;
+    const isEditing = !!editingTask;
+
     const main = document.createElement('main');
     main.classList.add('create-task-page');
 
@@ -21,10 +25,10 @@ export function CreateTaskView() {
                 Dashboard
             </a>
             <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-current">Create New</span>
+            <span class="breadcrumb-current">${isEditing ? 'Edit Task' : 'Create New'}</span>
         </div>
 
-        <h1 class="create-task-title">Create New Task</h1>
+        <h1 class="create-task-title">${isEditing ? 'Edit Task' : 'Create New Task'}</h1>
     `;
 
     // Form
@@ -36,7 +40,7 @@ export function CreateTaskView() {
                 <label class="form-label-required" for="task-title">
                     Task Title <span class="required-star">*</span>
                 </label>
-                <input type="text" id="task-title" class="form-input" placeholder="Enter task title">
+                <input type="text" id="task-title" class="form-input" placeholder="Enter task title" value="${isEditing ? editingTask.title : ''}">
             </div>
 
             <div class="form-row">
@@ -46,10 +50,10 @@ export function CreateTaskView() {
                     </label>
                     <select id="category" class="form-select">
                         <option value="">Select category</option>
-                        <option value="development">Development</option>
-                        <option value="design">Design</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="testing">Testing</option>
+                        <option value="development" ${isEditing && editingTask.category === 'development' ? 'selected' : ''}>Development</option>
+                        <option value="design" ${isEditing && editingTask.category === 'design' ? 'selected' : ''}>Design</option>
+                        <option value="marketing" ${isEditing && editingTask.category === 'marketing' ? 'selected' : ''}>Marketing</option>
+                        <option value="testing" ${isEditing && editingTask.category === 'testing' ? 'selected' : ''}>Testing</option>
                     </select>
                 </div>
 
@@ -59,9 +63,9 @@ export function CreateTaskView() {
                     </label>
                     <select id="priority" class="form-select">
                         <option value="">Select priority</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
+                        <option value="high" ${isEditing && editingTask.priority.toLowerCase() === 'high' ? 'selected' : ''}>High</option>
+                        <option value="medium" ${isEditing && editingTask.priority.toLowerCase() === 'medium' ? 'selected' : ''}>Medium</option>
+                        <option value="low" ${isEditing && editingTask.priority.toLowerCase() === 'low' ? 'selected' : ''}>Low</option>
                     </select>
                 </div>
             </div>
@@ -70,21 +74,21 @@ export function CreateTaskView() {
                 <div class="form-group-half">
                     <label class="form-label" for="status">Status</label>
                     <select id="status" class="form-select">
-                        <option value="pending">Pending</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="completed">Completed</option>
+                        <option value="pending" ${isEditing && editingTask.status === 'pending' ? 'selected' : ''}>Pending</option>
+                        <option value="in-progress" ${isEditing && editingTask.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                        <option value="completed" ${isEditing && editingTask.status === 'completed' ? 'selected' : ''}>Completed</option>
                     </select>
                 </div>
 
                 <div class="form-group-half">
                     <label class="form-label" for="due-date">Due Date</label>
-                    <input type="date" id="due-date" class="form-input">
+                    <input type="date" id="due-date" class="form-input" value="${isEditing ? editingTask.dueDate : ''}">
                 </div>
             </div>
 
             <div class="form-group-full">
                 <label class="form-label" for="description">Description</label>
-                <textarea id="description" class="form-textarea" placeholder="Add task description..."></textarea>
+                <textarea id="description" class="form-textarea" placeholder="Add task description...">${isEditing ? (editingTask.description || '') : ''}</textarea>
             </div>
 
             <p id="create-error" class="form-error" style="display:none;color:red;"></p>
@@ -95,7 +99,7 @@ export function CreateTaskView() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
-                    Save Task
+                    ${isEditing ? 'Update Task' : 'Save Task'}
                 </button>
             </div>
         </div>
@@ -106,12 +110,12 @@ export function CreateTaskView() {
     main.appendChild(header);
     main.appendChild(content);
 
-    taskRequest(main);
+    taskRequest(main, isEditing, editingTask?.id);
 
     return main;
 }
 
-function taskRequest(main) {
+function taskRequest(main, isEditing, taskId) {
     const form = main.querySelector('.task-form');
 
     form.addEventListener('submit', async (e) => {
@@ -130,26 +134,38 @@ function taskRequest(main) {
         const userId = store.user ? store.user.id : null;
 
         // Create object to send
-        const newTask = {
+        const taskData = {
             title,
             category,
-            priority,
+            priority: priority.charAt(0).toUpperCase() + priority.slice(1), // Capitalize priority
             status,
             dueDate,
             description,
             userId
         }
 
-        const taskResponse = await JsonServices.createTask(newTask);
+        let taskResponse;
+        if (isEditing) {
+            taskResponse = await JsonServices.updateTask(taskId, taskData);
+        } else {
+            taskResponse = await JsonServices.createTask(taskData);
+        }
 
         if (taskResponse.error) {
             const errorElem = form.querySelector('#create-error');
             errorElem.style.display = 'block';
             errorElem.textContent = taskResponse.error;
         } else {
-            // Redirect to dashboard on success
+            // Clear editing state and redirect
+            clearEditingTask();
             window.location.hash = '#dashboard';
-            console.log(taskResponse);
         }
     })
+
+    // Cancel button functionality
+    const cancelBtn = form.querySelector('.btn-cancel');
+    cancelBtn.addEventListener('click', () => {
+        clearEditingTask();
+        window.location.hash = '#dashboard';
+    });
 }

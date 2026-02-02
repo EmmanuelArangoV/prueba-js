@@ -1,9 +1,9 @@
 import { Sidebar } from '../components/Sidebar.js';
 import { Topbar } from '../components/Topbar.js';
 import { PageHeader } from '../components/PageHeader.js';
-import { StatsGrid } from '../components/StatsGrid.js';
-import { TaskTable } from '../components/TaskTable.js';
-import { myTasksStats } from "../state/store.js";
+import { MyTaskTable } from '../components/MyTaskTable.js';
+import { getStore } from "../state/store.js";
+import JsonServices from "../services/jsonServices.js";
 
 export function MyTasks() {
     const body = document.createElement('div');
@@ -19,29 +19,29 @@ export function MyTasks() {
     const content = document.createElement('main');
     content.classList.add('content');
 
-    content.appendChild(PageHeader('Task Management', 'Organize and track all your academic tasks', true));
+    content.appendChild(PageHeader('My Tasks', 'Manage and track all your tasks', true));
 
-    const stats = myTasksStats;
+    const store = getStore();
+    const userId = store.user ? store.user.id : null;
 
-    content.appendChild(StatsGrid(stats));
-
-    const tasks = [
-        {
-            title: 'Advanced Calculus Finals Prep',
-            meta: 'ID: #MATH-402 • Due in 2 days',
-            category: 'Mathematics',
-            priority: 'High',
-            status: 'Pending'
-        },
-        {
-            title: 'Database Systems Project: Phase 1',
-            meta: 'ID: #CS-204 • Group Assignment',
-            category: 'Computer Science',
-            priority: 'High',
-            status: 'In Progress'
+    JsonServices.getTasksByUser(userId || 0).then((tasks) => {
+        if(tasks.success) {
+            if (tasks.tasks.length > 0) {
+                const tableElement = MyTaskTable(tasks.tasks);
+                content.appendChild(tableElement);
+            } else {
+                const noTasksMessage = document.createElement('div');
+                noTasksMessage.classList.add('no-tasks-message');
+                noTasksMessage.innerHTML = `
+                    <p>You have no tasks at the moment. Start by creating a new task!</p>
+                    <a href="#create-task" class="btn btn-primary">Create New Task</a>
+                `;
+                content.appendChild(noTasksMessage);
+            }
+        } else {
+            console.error('Error fetching tasks:', tasks.error);
         }
-    ];
-    content.appendChild(TaskTable(tasks));
+    });
 
     mainContent.appendChild(content);
     body.appendChild(mainContent);

@@ -55,7 +55,7 @@ export function LoginView() {
         <button type="submit" class="btn-primary">Sign in</button>
 
         <div class="register-link">
-            Don't have an account? <a href="register.html">Register</a>
+            Don't have an account? <a href="#register">Register</a>
         </div>
     `;
 
